@@ -1,9 +1,4 @@
-import {
-  Refine,
-  GitHubBanner,
-  WelcomePage,
-  Authenticated,
-} from "@refinedev/core";
+import { Refine, GitHubBanner } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -25,11 +20,12 @@ import { useNotificationProvider } from "./components/refine-ui/notification/use
 import { Toaster } from "./components/refine-ui/notification/toaster";
 import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 import "./App.css";
+import Dashboard from "./pages/Dashboard";
+import { Home } from "lucide-react";
 
 function App() {
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ThemeProvider>
           <DevtoolsProvider>
@@ -42,9 +38,24 @@ function App() {
                 warnWhenUnsavedChanges: true,
                 projectId: "uSIPvy-yLpApR-LWWX6t",
               }}
+              resources={[
+                {
+                  name: "dashboard",
+                  list: "/",
+                  meta: { label: "Home", icon: <Home /> },
+                },
+              ]}
             >
               <Routes>
-                <Route index element={<WelcomePage />} />
+                <Route
+                  element={
+                    <Layout>
+                      <Outlet />
+                    </Layout>
+                  }
+                >
+                  <Route path="/" element={<Dashboard />} />
+                </Route>
               </Routes>
               <Toaster />
               <RefineKbar />
